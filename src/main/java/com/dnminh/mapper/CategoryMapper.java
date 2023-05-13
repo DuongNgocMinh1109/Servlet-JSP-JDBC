@@ -1,7 +1,6 @@
 package com.dnminh.mapper;
 
 import com.dnminh.models.CategoryModel;
-import com.dnminh.models.NewsModel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
