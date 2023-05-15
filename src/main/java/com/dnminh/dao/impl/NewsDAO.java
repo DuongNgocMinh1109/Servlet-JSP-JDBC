@@ -4,6 +4,7 @@ import com.dnminh.dao.INewsDAO;
 import com.dnminh.mapper.NewsMapper;
 import com.dnminh.models.NewsModel;
 
+import java.sql.*;
 import java.util.List;
 
 public class NewsDAO extends AbstractDAO<NewsModel> implements INewsDAO {
@@ -12,5 +13,11 @@ public class NewsDAO extends AbstractDAO<NewsModel> implements INewsDAO {
     public List<NewsModel> findByCategoryId(Long categoryId) {
         String sql_query = "SELECT * FROM news WHERE categoryid = ?";
         return query(sql_query, new NewsMapper(), categoryId);
+    }
+
+    @Override
+    public Long save(NewsModel newsModel) {
+        String sql = "INSERT INTO news (title, content, categoryid) VALUES (? ,? ,?)";
+        return insert(sql, newsModel.getTitle(), newsModel.getContent(), newsModel.getCategoryId());
     }
 }

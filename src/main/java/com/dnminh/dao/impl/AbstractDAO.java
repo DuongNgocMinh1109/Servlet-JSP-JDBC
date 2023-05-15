@@ -30,7 +30,7 @@ public class AbstractDAO<T> implements GenericDAO<T> {
         if (connection != null) {
             try {
                 preparedStatement = connection.prepareStatement(sql);
-                setparameters(preparedStatement, parameters); // set param
+                setParameters(preparedStatement, parameters); // set param
                 resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     resultQuery.add(rowMapper.mapRow(resultSet));
@@ -40,21 +40,98 @@ public class AbstractDAO<T> implements GenericDAO<T> {
                 return null;
             } finally {
                 try {
+                    connection.close();
                     if (preparedStatement != null) {
                         preparedStatement.close();
                     }
                     if (resultSet != null) {
                         resultSet.close();
                     }
-                } catch (SQLException throwables) {
-                    System.out.println("[-] AbstractDAO SQLException: " + throwables.getMessage());
+                } catch (SQLException ex) {
+                    System.out.println("[-] AbstractDAO SQLException: " + ex.getMessage());
                 }
             }
         }
         return null;
     }
 
-    private void setparameters(PreparedStatement preparedStatement, Object... parameters) {
+    @Override
+    public void update(String sql, Object... parameters) {
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement = null;
+        if (connection != null) {
+            try {
+                connection.setAutoCommit(false);
+                preparedStatement = connection.prepareStatement(sql);
+                setParameters(preparedStatement, parameters);
+                preparedStatement.executeUpdate();
+
+                System.out.println("[+] Successfully!");
+                connection.commit();
+            } catch (SQLException e) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("[-] AbstractDAO update() SQLException: " + ex.getMessage());
+                }
+            } finally {
+                try {
+                    connection.close();
+                    if (preparedStatement != null) {
+                        preparedStatement.close();
+                    }
+                } catch (SQLException ex2) {
+                    System.out.println("[-] AbstractDAO update() SQLException: " + ex2.getMessage());
+                }
+            }
+        }
+    }
+
+    @Override
+    public Long insert(String sql, Object... parameters) {
+        Connection connection = getConnection();
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Long id = null;
+        if (connection != null) {
+            try {
+                connection.setAutoCommit(false);
+                preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                setParameters(preparedStatement, parameters);
+                preparedStatement.executeUpdate();
+
+                resultSet = preparedStatement.getGeneratedKeys();
+                if (resultSet.next()) {
+                    id = resultSet.getLong(1);
+                }
+                connection.commit();
+                return id;
+            } catch (SQLException e) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("[-] AbstractDAO insert() SQLException: " + ex.getMessage());
+                }
+                return null;
+            } finally {
+                try {
+                    connection.close();
+                    if (preparedStatement != null) {
+                        preparedStatement.close();
+                    }
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                } catch (SQLException ex2) {
+                    System.out.println("[-] AbstractDAO insert() SQLException: " + ex2.getMessage());
+                }
+            }
+        }
+        return null;
+    }
+
+    private void setParameters(PreparedStatement preparedStatement, Object... parameters) {
         try {
             for (int i = 0; i < parameters.length; i++) {
                 Object parameter = parameters[i];
@@ -69,8 +146,8 @@ public class AbstractDAO<T> implements GenericDAO<T> {
                     preparedStatement.setTimestamp(index, (Timestamp) parameter);
                 }
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
 
     }
