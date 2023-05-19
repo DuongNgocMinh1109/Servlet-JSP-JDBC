@@ -23,7 +23,7 @@ CREATE TABLE user (
   modifiedby VARCHAR(255) NULL
 );
 -- ==============================================user (n:1) role==============================================
-ALTER TABLE user ADD CONSTRAINT fk_user_role FOREIGN KEY (roleid) REFERENCES role(id);
+ALTER TABLE user ADD CONSTRAINT fk_user_role FOREIGN KEY (roleid) REFERENCES role(id); -- side n (user) will contain FOREIGN KEY
 
 CREATE TABLE news (
   id bigint NOT NULL PRIMARY KEY auto_increment,
@@ -48,7 +48,7 @@ CREATE TABLE category (
   modifiedby VARCHAR(255) NULL
 );
 -- ==============================================news (n:1) category==============================================
-ALTER TABLE news ADD CONSTRAINT fk_news_category FOREIGN KEY (categoryid) REFERENCES category(id);
+ALTER TABLE news ADD CONSTRAINT fk_news_category FOREIGN KEY (categoryid) REFERENCES category(id); -- side n (news) will contain FOREIGN KEY
 
 CREATE TABLE comment (
   id bigint NOT NULL PRIMARY KEY auto_increment,
@@ -61,5 +61,5 @@ CREATE TABLE comment (
   modifiedby VARCHAR(255) NULL
 );
 -- ==============================================user (1:n) comment (n:1) news==============================================
-ALTER TABLE comment ADD CONSTRAINT fk_comment_user FOREIGN KEY (user_id) REFERENCES user(id);
-ALTER TABLE comment ADD CONSTRAINT fk_comment_news FOREIGN KEY (new_id) REFERENCES news(id);
+ALTER TABLE comment ADD CONSTRAINT fk_comment_user FOREIGN KEY (user_id) REFERENCES user(id); -- side n (comment) will contain FOREIGN KEY
+ALTER TABLE comment ADD CONSTRAINT fk_comment_news FOREIGN KEY (new_id) REFERENCES news(id); -- side n (comment) will contain FOREIGN KEY
