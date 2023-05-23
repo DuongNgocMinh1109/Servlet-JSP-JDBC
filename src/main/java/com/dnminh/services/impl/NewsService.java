@@ -4,6 +4,7 @@ import com.dnminh.dao.ICategoryDAO;
 import com.dnminh.dao.INewsDAO;
 import com.dnminh.models.CategoryModel;
 import com.dnminh.models.NewsModel;
+import com.dnminh.paging.Pageable;
 import com.dnminh.services.INewsService;
 
 import javax.inject.Inject;
@@ -15,6 +16,11 @@ public class NewsService implements INewsService {
     private INewsDAO newsDAO;
     @Inject
     private ICategoryDAO categoryDAO;
+
+    @Override
+    public List<NewsModel> findAll(Pageable pageable) {
+        return newsDAO.findAll(pageable);
+    }
 
     @Override
     public List<NewsModel> findByCategoryId(Long categoryId) {
@@ -54,5 +60,10 @@ public class NewsService implements INewsService {
             //2.delete news
             newsDAO.delete(id);
         }
+    }
+
+    @Override
+    public int getTotalItem() {
+        return newsDAO.getTotalItem();
     }
 }

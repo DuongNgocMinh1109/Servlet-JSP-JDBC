@@ -3,11 +3,23 @@ package com.dnminh.dao.impl;
 import com.dnminh.dao.INewsDAO;
 import com.dnminh.mapper.NewsMapper;
 import com.dnminh.models.NewsModel;
+import com.dnminh.paging.Pageable;
 
 import java.sql.*;
 import java.util.List;
 
 public class NewsDAO extends AbstractDAO<NewsModel> implements INewsDAO {
+    @Override
+    public List<NewsModel> findAll(Pageable pageable) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM news");
+        if (pageable.getSorter() != null) {
+            sql.append(" ORDER BY " + pageable.getSorter().getSortField() + " " + pageable.getSorter().getSortBy() + "");
+        }
+        if (pageable.getOffset() != null && pageable.getLimit() != null) {
+            sql.append(" LIMIT " + pageable.getOffset() + ", " + pageable.getLimit() + "");
+        }
+        return query(sql.toString(), new NewsMapper());
+    }
 
     @Override
     public NewsModel findOne(Long newsId) {
@@ -46,5 +58,11 @@ public class NewsDAO extends AbstractDAO<NewsModel> implements INewsDAO {
     public void delete(long id) {
         String sql = "DELETE FROM news WHERE id = ?";
         update(sql, id);
+    }
+
+    @Override
+    public int getTotalItem() {
+        String sql = "SELECT count(*) FROM news";
+        return count(sql);
     }
 }

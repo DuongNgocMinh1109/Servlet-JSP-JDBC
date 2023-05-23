@@ -12,11 +12,11 @@ public class AbstractModel<T> {
     private String modifiedBy;
     private long[] arrayId;
     private List<T> listResult = new ArrayList<>();
-    private Integer page;
-    private Integer maxPageItem;
+    private Integer page; // Page Index
+    private Integer itemEachPage;
     private Integer totalPage;
     private Integer totalItem;
-    private String sortName;
+    private String sortField;
     private String sortBy;
     private String alert;
     private String message;
@@ -86,12 +86,12 @@ public class AbstractModel<T> {
         this.page = page;
     }
 
-    public Integer getMaxPageItem() {
-        return maxPageItem;
+    public Integer getItemEachPage() {
+        return itemEachPage;
     }
 
-    public void setMaxPageItem(Integer maxPageItem) {
-        this.maxPageItem = maxPageItem;
+    public void setItemEachPage(Integer itemEachPage) {
+        this.itemEachPage = itemEachPage;
     }
 
     public Integer getTotalPage() {
@@ -110,12 +110,12 @@ public class AbstractModel<T> {
         this.totalItem = totalItem;
     }
 
-    public String getSortName() {
-        return sortName;
+    public String getSortField() {
+        return sortField;
     }
 
-    public void setSortName(String sortName) {
-        this.sortName = sortName;
+    public void setSortField(String sortField) {
+        this.sortField = sortField;
     }
 
     public String getSortBy() {

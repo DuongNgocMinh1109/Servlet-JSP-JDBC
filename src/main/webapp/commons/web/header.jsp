@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!-- Navigation -->
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
         <a class="navbar-brand" href="#">dnminh</a>
@@ -26,6 +26,9 @@
 <%--                        <a class="nav-link" href='<c:url value="/dang-nhap?action=login"/>'>Đăng nhập</a>--%>
 <%--                    </li>--%>
 <%--                </c:if>--%>
+                <li class="nav-item">
+                    <a class="nav-link" href='<c:url value="/login?action=login"/>'>Login</a>
+                </li>
             </ul>
         </div>
     </div>

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/home"})
+@WebServlet(urlPatterns = {"/home", "/login"})
 public class HomeController extends HttpServlet {
     @Inject
     private ICategoryService categoryService;
@@ -22,9 +22,17 @@ public class HomeController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("categories", categoryService.findAll());
-        RequestDispatcher rd = req.getRequestDispatcher("/views/web/home.jsp");
-        rd.forward(req, resp);
+        String action = req.getParameter("action");
+        if (action != null && action.equals("login")){
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/views/login.jsp");
+            requestDispatcher.forward(req, resp);
+        } else if (action != null && action.equals("logout")) {
+            System.out.println("Pending...");
+        } else {
+            req.setAttribute("categories", categoryService.findAll());
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/views/web/home.jsp");
+            requestDispatcher.forward(req, resp);
+        }
     }
 
     @Override
