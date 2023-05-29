@@ -1,18 +1,18 @@
 package com.dnminh.models;
 
 public class UserModel extends AbstractModel<UserModel> {
-    private String userName;
+    private String username;
     private String fullName;
     private String password;
     private int status;
     private Long roleId;
     private RoleModel role = new RoleModel();
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
     public String getFullName() {
         return fullName;

@@ -1,7 +1,7 @@
-package com.dnminh.dao;
+package com.dnminh.services;
 
 import com.dnminh.models.UserModel;
 
-public interface IUserDAO extends GenericDAO<UserModel> {
+public interface IUserService {
     UserModel findByCredentials(String username, String password, Integer status);
 }

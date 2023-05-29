@@ -6,14 +6,20 @@ import com.dnminh.mapper.RowMapper;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class AbstractDAO<T> implements GenericDAO<T> {
+    ResourceBundle resourceBundle = ResourceBundle.getBundle("db");
     public Connection getConnection() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            /*Class.forName("com.mysql.jdbc.Driver");
             String url_db = "jdbc:mysql://localhost:3306/servlet-jsp-jdbc";
             String username_db = "root";
-            String password_db = "root";
+            String password_db = "root";*/
+            Class.forName(resourceBundle.getString("driverName"));
+            String url_db = resourceBundle.getString("url_db");
+            String username_db = resourceBundle.getString("username_db");
+            String password_db = resourceBundle.getString("password_db");
             return DriverManager.getConnection(url_db, username_db, password_db);
         } catch (ClassNotFoundException | SQLException e) {
             return null;
